@@ -103,14 +103,16 @@
 #ifdef NONJAILBROKEN
   if (!IsProcessDebugged())
   {
-    if (@available(iOS 14, *))
-    {
-      // Show the incompatibilty warning
+    NSDictionary *entitlements = cached_app_entitlements();
+    
+    if (@available(iOS 14.2, *)) {
+      return [entitlements[@"get-task-allow"] boolValue]; 
+    } else {
       self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
       self.window.rootViewController = [[UIViewController alloc] initWithNibName:@"OSTooNewNotice" bundle:nil];
       [self.window makeKeyAndVisible];
       
-      return true;
+      return true; 
     }
   }
 #endif
